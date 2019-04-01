@@ -1,21 +1,24 @@
 const mongoose = require("mongoose");
 const User = require("./user");
 
-const sessionSchema = new mongoose.Schema({
-  dateCreated: Date,
-  lastSessionDate: Date,
-  totalTimeSpent: Number,
-  lastSessionStart: Date,
-  lastSessionEnd: Date,
-  notes: {
-    type: String,
-    maxlength: 200
+const sessionSchema = new mongoose.Schema(
+  {
+    lastSessionDate: Date,
+    totalTimeSpent: Number,
+    lastSessionStart: Date,
+    lastSessionEnd: Date,
+    isPrivate: Boolean,
+    notes: {
+      type: String,
+      maxlength: 200
+    },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User"
+    }
   },
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User"
-  }
-});
+  { timestamps: true }
+);
 
 //mongoose middleware hook function before any Session is removed
 //to find the User that the removed message is associated with, and take out this session id from the users session array

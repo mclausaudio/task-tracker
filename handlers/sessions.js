@@ -6,12 +6,7 @@ exports.createSession = async function(req, res, next) {
     //create the new sessions
     console.log("before session create");
     let session = await db.Session.create({
-      dateCreated: Date.now(),
       userId: req.params.id,
-      lastSessionDate: undefined,
-      totalTimeSpent: undefined,
-      lastSessionStart: undefined,
-      lastSessionEnd: undefined,
       notes: req.body.notes
     });
     console.log("after session create ----> session", session);
@@ -35,14 +30,34 @@ exports.createSession = async function(req, res, next) {
   }
 };
 
-// export.getSession = async function (req, res, next) {
+// /api/users/:id/sessions/session_id
+exports.getSession = async function(req, res, next) {
+  console.log("right before try in getSession");
+  try {
+    //find session by id
+    console.log(
+      "inside getSession handler try statement, the session_id is",
+      req.params.session_id
+    );
+    let session = await db.Session.findById(req.params.session_id);
+    return res.status(200).json(session);
+  } catch (err) {
+    return next(err);
+  }
+};
 
-// }
-
-// export.deleteSession = async function (req, res, next) {
-
-// }
-
+// /api/users/:id/sessions/session_id
+exports.deleteSession = async function(req, res, next) {
+  try {
+    //we can not use mongoose findByIdAndRemove because our Session model has a pre remove hook
+    let foundSession = await db.Session.findById(req.params.session_id);
+    await foundSession.remove();
+    return res.status(200).json(foundSession);
+  } catch (err) {
+    return next(err);
+  }
+};
+// /api/users/:id/sessions/session_id
 // export.updateSession = async function (req, res, next) {
 
 // }
