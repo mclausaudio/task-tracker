@@ -9,11 +9,13 @@ const PORT = 8081;
 const errorHandler = require("./handlers/error");
 
 const authRoutes = require("./routes/auth");
+const sessionRoutes = require("./routes/sessions");
 
 app.use(cors());
 app.use(bodyParser.json());
 
 app.use("/api/auth", authRoutes);
+app.use("/api/users/:id/sessions", sessionRoutes);
 
 //If none of the routes are reached, run this function
 app.use(function(req, res, next) {

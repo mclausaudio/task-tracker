@@ -21,7 +21,13 @@ const userSchema = new mongoose.Schema({
   },
   dateJoined: Date,
   city: String,
-  bio: String
+  bio: String,
+  sessions: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Session"
+    }
+  ]
 });
 
 //adding a hook below, to run right before an instance of this model gets 'saved'
@@ -42,7 +48,7 @@ userSchema.pre("save", async function(next) {
 });
 
 //a helper function, or an instance method..  so every users object created from this model will have this function
-userSchema.method.comparePassword = async function(candidatePassword, next) {
+userSchema.methods.comparePassword = async function(candidatePassword, next) {
   try {
     //below is an async func that returns true or false.. is async so need to 'await'
     //'THIS' refers to the actual user object created from the model
