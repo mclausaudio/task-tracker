@@ -8,3 +8,4 @@ mongoose.connect("mongodb://localhost/task-tracker", {
 });
 
 module.exports.User = require("./user");
+module.exports.Session = require("./session");
