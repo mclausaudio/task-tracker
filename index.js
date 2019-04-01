@@ -11,11 +11,18 @@ const errorHandler = require("./handlers/error");
 const authRoutes = require("./routes/auth");
 const sessionRoutes = require("./routes/sessions");
 
+const { loginRequired, ensureCorrectUser } = require("./middleware/auth");
+
 app.use(cors());
 app.use(bodyParser.json());
 
 app.use("/api/auth", authRoutes);
-app.use("/api/users/:id/sessions", sessionRoutes);
+app.use(
+  "/api/users/:id/sessions",
+  loginRequired,
+  ensureCorrectUser,
+  sessionRoutes
+);
 
 //If none of the routes are reached, run this function
 app.use(function(req, res, next) {
