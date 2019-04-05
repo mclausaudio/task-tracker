@@ -3,17 +3,21 @@ const express = require("express");
 const router = express.Router({ mergeParams: true });
 
 const {
-  createSession,
-  getSession,
-  deleteSession
+	createSession,
+	getSession,
+	updateSession,
+	deleteSession
 } = require("../handlers/sessions");
 
-//prefix all routes with /api/users/:id/sessions
+// /api/users /: id / activities /: activity_id / sessions
+//create, dont need to get all sessions of a specific activity ---> that is done in activities
 router.route("/").post(createSession);
 
+//read, update delete
 router
-  .route("/:session_id")
-  .get(getSession)
-  .delete(deleteSession);
+	.route("/:session_id")
+	.get(getSession) //get a single session
+	.post(updateSession) //update a session
+	.delete(deleteSession); // delete a single session
 
 module.exports = router;

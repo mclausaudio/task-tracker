@@ -23,12 +23,18 @@ const activitySchema = new mongoose.Schema(
 //when I delete am activity I want to remove all of the sessions that have it's activity ID
 activitySchema.pre("remove", async function(next) {
 	try {
+		console.log("in the hook!");
 		//find all the sessions with this activity id and remove them
-		Session.find({ activityId: this._id }).remove();
+		let sessions = await Session.find({ activityId: this._id }).remove();
+		console.log("after session.find remove", sessions);
 		//now grab the user
 		let user = await User.findById(this.userId);
+		console.log("user is, ", user);
 		//remove the id from the users activity array
-		user.activites.remove(this.id);
+		console.log("this.id", this.id);
+		console.log("before user.activities.remove", user.activities);
+		user.activities.remove(this._id);
+		console.log("after user.activities.remove");
 		//save the user
 		await user.save();
 		//return next to continue on
