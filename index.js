@@ -19,10 +19,19 @@ app.use(bodyParser.json());
 
 app.use("/api/auth", authRoutes);
 //dont forget to add middleware later, loginRequired and ensureCorrectUser
-app.use("/api/users/:id/activities", activityRoutes);
+app.use(
+	"/api/users/:id/activities",
+	loginRequired,
+	ensureCorrectUser,
+	activityRoutes
+);
 
-//dont forget to add middlewarae later, loginRequired and encureCorrectUser
-app.use("/api/users/:id/activities/:activity_id/sessions", sessionRoutes);
+app.use(
+	"/api/users/:id/activities/:activity_id/sessions",
+	loginRequired,
+	ensureCorrectUser,
+	sessionRoutes
+);
 
 //get all sessions from everyone
 app.use("/api/sessions", loginRequired, async function(req, res, next) {
@@ -44,8 +53,7 @@ app.use("/api/sessions", loginRequired, async function(req, res, next) {
 });
 
 //get all activities from everyone
-// ============= TOOK OUT (((((((((((loginRequired))))))))))) MIDDLEWARE FOR TESTING PUT IT BACK BEFORE DEPLOY
-app.use("/api/activities", async function(req, res, next) {
+app.use("/api/activities", loginRequired, async function(req, res, next) {
 	try {
 		//we are going to find all sessions
 		let activities = await db.Activity.find()

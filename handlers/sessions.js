@@ -73,15 +73,6 @@ exports.updateSession = async function(req, res, next) {
 			})
 			.populate("sessions");
 		console.log("session", session);
-		// then go back and find that message and popualte it with the username and profile pic,
-		//so we can immediately send it back to the front end with some additional info, not just the id
-		// let foundActivity = await db.Activity.findById(updatedActivity.id)
-		// 	.populate("userId", {
-		// 		username: true,
-		// 		profilePicture: true
-		// 	})
-		// 	.populate("sessions");
-		// console.log("found activity", foundActivity);
 		return res.status(200).json(session);
 	} catch (err) {
 		return next(err);
@@ -99,7 +90,3 @@ exports.deleteSession = async function(req, res, next) {
 		return next(err);
 	}
 };
-// /api/users/:id/sessions/session_id
-// export.updateSession = async function (req, res, next) {
-
-// }
