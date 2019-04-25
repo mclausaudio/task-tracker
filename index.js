@@ -4,7 +4,7 @@ const app = express();
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const db = require("./models");
-const PORT = 8081;
+const PORT = process.env.PORT || 8081;
 
 const errorHandler = require("./handlers/error");
 

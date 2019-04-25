@@ -3,10 +3,13 @@ const mongoose = require("mongoose");
 mongoose.set("debug", true);
 //this line of code enables promises and sets the Promise library to native js promises.
 mongoose.Promise = Promise;
-mongoose.connect("mongodb://localhost/task-tracker", {
-	keepAlive: true,
-	useNewUrlParser: true
-});
+mongoose.connect(
+	process.env.MONGODB_URI || "mongodb://localhost/task-tracker",
+	{
+		keepAlive: true,
+		useNewUrlParser: true
+	}
+);
 
 module.exports.User = require("./user");
 module.exports.Session = require("./session");
